@@ -42,6 +42,21 @@ def command_line_with_mistake():
 
 
 @pytest.fixture
+def command_line_with_spaces():
+    return [
+        'manage.py',
+        'converter',
+        '--output=test.json',
+        '--input=test.rss',
+        '--author=first_name',
+        'second_name',
+        'last_name',
+        '--sort=asc',
+        '--limit=1'
+        ]
+
+
+@pytest.fixture
 def command_args_parameters():
     return {
         'converter': {
@@ -78,6 +93,20 @@ def test_initialize_args_with_random_order(command_line_with_random_order, comma
         'output': 'test.json',
         'sort': 'asc',
         'author': 'somebody',
+        'limit': '1'
+    }
+
+
+def test_initialize_args_with_spaces(command_line_with_spaces, command_args_parameters):
+    """Test transform options to dict method failure in case of inputed spaces in command option."""
+
+    command_manager = CommandManager(command_line_with_spaces[1], command_line_with_spaces[2:])
+    command_details = command_manager.initialize_args(command_args_parameters[command_manager.command])
+    assert command_details == {
+        'input': 'test.rss',
+        'output': 'test.json',
+        'sort': 'asc',
+        'author': 'first_name second_name last_name',
         'limit': '1'
     }
 

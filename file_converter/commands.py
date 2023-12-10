@@ -6,6 +6,8 @@ from file_converter.exceptions import OptionIsRequiredException, InputMethodNotA
 
 
 class Command(ABC):
+    """Abstract command's interface."""
+
     def __init__(self):
         raise NotImplementedError
 
@@ -19,6 +21,8 @@ class Command(ABC):
 
 
 class ConverterCommand(Command):
+    """Converter command class realization."""
+    
     def __init__(self, input, output, sort=None, author=None, limit=None):
         self.input = input
         self.output = output

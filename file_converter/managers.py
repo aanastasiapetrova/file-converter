@@ -1,6 +1,8 @@
 from file_converter.exceptions import OptionFormatException, OptionIsRequiredException
 
 class CommandManager:
+    """Command manager class to manage commands classes."""
+    
     def __init__(self, command, args):
         self.command = command
         self.args = args
@@ -26,6 +28,7 @@ class CommandManager:
 
     def initialize_args(self, command_args_parameters):
         """Transform inputed command options from string to dictionary."""
+
         offset = 1
 
         for i in range(len(self.args)):
