@@ -19,34 +19,35 @@ class Command(ABC):
 
 
 class ConverterCommand(Command):
-    def __init__(self, input, output, sort, author, limit):
-        self._input = input
-        self._output = output
-        self._sort = sort
-        self._author = author
-        self._limit = limit
+    def __init__(self, input, output, sort=None, author=None, limit=None):
+        self.input = input
+        self.output = output
+        self.sort = sort
+        self.author = author
+        self.limit = limit
 
 
     def info(self):
         """Shows information abouted inputed options."""
 
-        return f' input - {self._input}, output - {self._output}, sort - {self._sort}, author - {self._author}, limit - {self._limit}'
+        return f' input - {self.input}, output - {self.output}, sort - {self.sort}, author - {self.author}, limit - {self.limit}'
     
     
-    def get_input_data(self, input):
+    def get_input_data(self, client=requests):
         """Analyse the input type and return inputed data."""
+        #TODO: handle timeout exception while accessing remote url
 
-        data = []
+        data = ''
 
-        if re.match(r'[A-Z]:/[\w+/]*\.\w+', input) or re.match(r'\/?[\w+\/]*\.\w+', input):
-            with open(input, 'r') as filename:
+        if re.match(r'[A-Z]:\/[\S+\/]*\.\w+', self.input) or re.match(r'\/?[\w+\/]*\.\w+', self.input):
+            with open(self.input, 'r') as filename:
                 data = filename.readlines()
-        elif re.match(r'(https|http)://[\w+\/]*\.\w+[\w+]*', input):
-            data = requests.get(input).text
-        elif input == 'stdin':
+        elif re.match(r'(https|http):\/\/[\S+\/]*\.\w+[\w+]*', self.input):
+            data = client.get(self.input).text
+        elif self.input == 'stdin':
             data = sys.stdin.read()
         else:
-            raise InputMethodNotAllowed(f'Inputed method {input} is not allowed.')
+            raise InputMethodNotAllowed(f'Inputed method {self.input} is not allowed.')
         
         return data
 
@@ -54,6 +55,6 @@ class ConverterCommand(Command):
     def start(self):
         """Starting converter command."""
 
-        if self._input is None or self._output is None:
+        if self.input is None or self.output is None:
             raise OptionIsRequiredException('Some of required options are missing!')
-        inputed_data = self.get_input_data(self._input)
+        inputed_data = self.get_input_data()
