@@ -3,3 +3,6 @@ class OptionFormatException(Exception):
 
 class OptionIsRequiredException(Exception):
     pass
+
+class InputMethodNotAllowed(Exception):
+    pass

@@ -25,4 +25,5 @@ if __name__ == '__main__':
     print(command_details)
     command = command_manager.get_command(config, command_details)
 
+    print(command.info())
     command.start()
