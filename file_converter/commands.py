@@ -38,7 +38,7 @@ class ConverterCommand(Command):
 
         data = ''
 
-        if re.match(r'[A-Z]:\/[\S+\/]*\.\w+', self.input) or re.match(r'\/?[\w+\/]*\.\w+', self.input):
+        if re.match(r'[A-Z]:\/[\S+\s?\/]*\.\w+', self.input) or re.match(r'\/?[\w+\/]*\.\w+', self.input):
             with open(self.input, 'r') as filename:
                 data = filename.readlines()
         elif re.match(r'(https|http):\/\/[\S+\/]*\.\w+[\w+]*', self.input):
