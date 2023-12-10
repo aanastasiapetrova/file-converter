@@ -4,5 +4,8 @@ class OptionFormatException(Exception):
 class OptionIsRequiredException(Exception):
     pass
 
-class InputMethodNotAllowed(Exception):
+class InputMethodNotAllowedException(Exception):
+    pass
+
+class ConnectionFailureException(Exception):
     pass

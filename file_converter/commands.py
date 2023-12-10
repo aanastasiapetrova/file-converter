@@ -2,7 +2,7 @@ import re
 import sys
 import requests
 from abc import ABC, abstractmethod
-from file_converter.exceptions import OptionIsRequiredException, InputMethodNotAllowed
+from file_converter.exceptions import OptionIsRequiredException, InputMethodNotAllowedException, ConnectionFailureException
 
 
 class Command(ABC):
@@ -35,7 +35,6 @@ class ConverterCommand(Command):
     
     def get_input_data(self, client=requests):
         """Analyse the input type and return inputed data."""
-        #TODO: handle timeout exception while accessing remote url
 
         data = ''
 
@@ -43,11 +42,14 @@ class ConverterCommand(Command):
             with open(self.input, 'r') as filename:
                 data = filename.readlines()
         elif re.match(r'(https|http):\/\/[\S+\/]*\.\w+[\w+]*', self.input):
-            data = client.get(self.input).text
+            try:
+                data = client.get(self.input).text
+            except Exception:
+                raise ConnectionFailureException(f'Getting data from {self.input} address is failed. Try again or choose another address.')
         elif self.input == 'stdin':
             data = sys.stdin.read()
         else:
-            raise InputMethodNotAllowed(f'Inputed method {self.input} is not allowed.')
+            raise InputMethodNotAllowedException(f'Inputed method {self.input} is not allowed.')
         
         return data
 
