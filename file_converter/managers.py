@@ -1,8 +1,8 @@
-from file_converter.exceptions import OptionFormatException, OptionIsRequiredException
+from file_converter.exceptions import OptionFormatIsIncorrectException, OptionIsRequiredException
 
 class CommandManager:
     """Command manager class to manage commands classes."""
-    
+
     def __init__(self, command, args):
         self.command = command
         self.args = args
@@ -23,7 +23,7 @@ class CommandManager:
             case 2:
                 return True
             case _:
-                raise OptionFormatException(f"Command option should start with --, but option {option} does not.")
+                raise OptionFormatIsIncorrectException(f"Command option should start with --, but option {option} does not.")
 
 
     def initialize_args(self, command_args_parameters):

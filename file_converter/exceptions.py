@@ -1,4 +1,4 @@
-class OptionFormatException(Exception):
+class OptionFormatIsIncorrectException(Exception):
     pass
 
 class OptionIsRequiredException(Exception):
@@ -7,5 +7,14 @@ class OptionIsRequiredException(Exception):
 class InputMethodNotAllowedException(Exception):
     pass
 
-class ConnectionFailureException(Exception):
+class ConnectionIsFailedException(Exception):
+    pass
+
+class FormatIsUnsupportedException(Exception):
+    pass
+
+class FileIsIncorrectException(Exception):
+    pass
+
+class StreamErrorException(Exception):
     pass

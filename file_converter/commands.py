@@ -1,8 +1,19 @@
 import re
 import sys
 import requests
+import magic
 from abc import ABC, abstractmethod
-from file_converter.exceptions import OptionIsRequiredException, InputMethodNotAllowedException, ConnectionFailureException
+from file_converter.exceptions import (
+    OptionIsRequiredException,
+    InputMethodNotAllowedException,
+    ConnectionIsFailedException,
+    FormatIsUnsupportedException,
+    FileIsIncorrectException,
+    StreamErrorException
+    )
+from file_converter.parsers import JsonParser
+from pathlib import Path
+import file_converter.parsers as parsers
 
 
 class Command(ABC):
@@ -22,40 +33,72 @@ class Command(ABC):
 
 class ConverterCommand(Command):
     """Converter command class realization."""
-    
+
     def __init__(self, input, output, sort=None, author=None, limit=None):
         self.input = input
         self.output = output
         self.sort = sort
         self.author = author
         self.limit = limit
+            
 
+    @staticmethod
+    def get_inputed_data_format(data):
+        """Makes primary content type definition."""
+
+        if data.count('{') == data.count('}') and data.count('{'):
+            return 'json'
+        elif '<?xml' in data:
+            if '<rss' in data and '</rss>' in data:
+                    return 'rss'
+            elif '<feed' in data and '</feed>' in data:
+                return 'atom'
+        raise FormatIsUnsupportedException(f"Content can't be parsed.")
+    
 
     def info(self):
-        """Shows information abouted inputed options."""
+        """Shows information about inputed options."""
 
         return f' input - {self.input}, output - {self.output}, sort - {self.sort}, author - {self.author}, limit - {self.limit}'
     
     
-    def get_input_data(self, client=requests):
+    def get_input_data(self, client=requests, stream=sys.stdin):
         """Analyse the input type and return inputed data."""
-
-        data = ''
+        #TODO: test filestream input
+        
+        data, format = '', ''
 
         if re.match(r'[A-Z]:\/[\S+\s?\/]*\.\w+', self.input) or re.match(r'\/?[\w+\/]*\.\w+', self.input):
-            with open(self.input, 'r') as filename:
-                data = filename.readlines()
+            try:
+                with open(self.input, 'r', encoding='utf8') as filename:
+                    data = ' '.join([l.strip() for l in filename.readlines()])
+            except Exception as e:
+                raise FileIsIncorrectException(f'The error occured while opening file by {self.input} path. See the original exception: {e}')
+            
         elif re.match(r'(https|http):\/\/[\S+\/]*\.\w+[\w+]*', self.input):
             try:
                 data = client.get(self.input).text
-            except Exception:
-                raise ConnectionFailureException(f'Getting data from {self.input} address is failed. Try again or choose another address.')
+            except Exception as e:
+                raise ConnectionIsFailedException(f'The error occured while getting data from {self.input} address. See the original exception: {e}.')
+            
         elif self.input == 'stdin':
-            data = sys.stdin.read()
+            try:
+                data = stream.read()
+            except Exception:
+                raise StreamErrorException(f'The error occured while getting data by stdin. See the original exception: {e}.')
+            
         else:
             raise InputMethodNotAllowedException(f'Inputed method {self.input} is not allowed.')
         
-        return data
+        format = ConverterCommand.get_inputed_data_format(data)
+        
+        return str(data), format
+    
+
+    def get_output_data_format(self):
+        """Defines output file format by its extension."""
+
+        return self.output.split('.')[-1]
 
 
     def start(self):
@@ -63,4 +106,9 @@ class ConverterCommand(Command):
 
         if self.input is None or self.output is None:
             raise OptionIsRequiredException('Some of required options are missing!')
-        inputed_data = self.get_input_data()
+        
+        inputed_data, inputed_format = self.get_input_data()
+
+        output_data = self.get_output_data_format()
+
+        print(parsers.parsers_manager.get_parser(inputed_format, inputed_data).parse())

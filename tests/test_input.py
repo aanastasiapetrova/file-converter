@@ -1,6 +1,6 @@
 import pytest
 from file_converter.managers import CommandManager
-from file_converter.exceptions import OptionFormatException
+from file_converter.exceptions import OptionFormatIsIncorrectException
 
 @pytest.fixture
 def command_line():
@@ -115,5 +115,5 @@ def test_initialize_args_with_incorrect_arg(command_line_with_mistake, command_a
     """Test transform options to dict method failure in case of incorrect input."""
 
     command_manager = CommandManager(command_line_with_mistake[1], command_line_with_mistake[2:])
-    with pytest.raises(OptionFormatException):
+    with pytest.raises(OptionFormatIsIncorrectException):
         command_details = command_manager.initialize_args(command_args_parameters[command_manager.command])
