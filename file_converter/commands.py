@@ -14,6 +14,8 @@ from file_converter.exceptions import (
 from file_converter.parsers import JsonParser
 from pathlib import Path
 import file_converter.parsers as parsers
+from lxml import etree
+
 
 
 class Command(ABC):
@@ -46,7 +48,7 @@ class ConverterCommand(Command):
     def get_inputed_data_format(data):
         """Makes primary content type definition."""
 
-        if data.count('{') == data.count('}') and data.count('{'):
+        if data.count('{') == data.count('}') and data.count('{') and not '<?xml' in data:
             return 'json'
         elif '<?xml' in data:
             if '<rss' in data and '</rss>' in data:
@@ -64,7 +66,6 @@ class ConverterCommand(Command):
     
     def get_input_data(self, client=requests, stream=sys.stdin):
         """Analyse the input type and return inputed data."""
-        #TODO: test filestream input
         
         data, format = '', ''
 
@@ -109,6 +110,6 @@ class ConverterCommand(Command):
         
         inputed_data, inputed_format = self.get_input_data()
 
-        output_data = self.get_output_data_format()
+        output_data = self.get_output_data_format()        
 
-        print(parsers.parsers_manager.get_parser(inputed_format, inputed_data).parse())
+        print(parsers.parsers_manager.get_parser(inputed_format).parse(inputed_data))

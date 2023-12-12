@@ -14,19 +14,18 @@ class ParserManager:
         self._parsers[format] = parser
 
     
-    def get_parser(self, format, inputed_data):
+    def get_parser(self, format):
         parser = self._parsers[format]
         if not parser:
             raise ValueError(f"{format} format parser isn't registered.")
-        return parser(inputed_data)
+        return parser()
         
 
 class Parser(ABC):
     """Abstract parser's interface."""
 
-    def __init__(self, inputed_data):
-        self.inputed_data = inputed_data
-
+    def __init__(self):
+        pass
 
     @abstractmethod
     def parse(self):
@@ -40,13 +39,10 @@ class JsonParser(Parser):
        return json.loads(self.inputed_data)    
 
 
-class AtomParser(Parser):
-    """Atom parser class realization."""
+class XmlParser(Parser):
+    """Xml parser class realization."""
 
-    def parse(self, elements=[], data={}):
-        root = etree.XML(bytes(self.inputed_data, encoding='utf-8'), etree.XMLParser(remove_blank_text=True))
-
-        elements = list(root.iter("*"))[1:].copy()
+    def tranform_to_object(self, elements=[], data={}):
 
         while len(elements):
             element = elements[0]
@@ -55,28 +51,42 @@ class AtomParser(Parser):
                 data[tag] = element.text
                 elements.remove(element)
             elif not element.getchildren() and not element.text:
-                data[tag] = element.attrib
+                if tag in data.keys():
+                    prev_value = data[tag]
+                    data[tag] = [prev_value]
+                    data[tag].append(element.attrib)
+                else:
+                    data[tag] = element.attrib
                 elements.remove(element)
             else:
-                data[tag] = {}
+                if tag in data:
+                    value = data[tag]
+                    data[tag] = [value]
+                    data[tag].append(self.tranform_to_object(element.getchildren(), {}))
+                else:
+                    data[tag] = {}
+                    self.tranform_to_object(element.getchildren(), data[tag])
+                grand_children = []
                 for child in element.getchildren():
-                    child_tag = child.tag.split('}')[-1]
-                    data[tag][child_tag] = child.text
-                    elements.remove(child)
+                    if child.getchildren():
+                        for grand in child.getchildren():
+                            grand_children.append(grand)
+                elements = [e for e in elements if e not in element.getchildren() and e not in grand_children]
                 elements.remove(element)
-        print(data)
+            
+        return data
 
-
-
-
-class RssParser(Parser):
-    """Rss parser class realization."""
     
-    def parse(self):
-        pass
+    def parse(self, inputed_data):
+
+        root = etree.XML(bytes(inputed_data, encoding='utf-8'), etree.XMLParser(remove_blank_text=True))
+        elements = list(root.iter("*"))[1:].copy()
+
+        return self.tranform_to_object(elements, {})
+
 
 
 parsers_manager = ParserManager()
 parsers_manager.register_parser('json', JsonParser)
-parsers_manager.register_parser('atom', AtomParser)
-parsers_manager.register_parser('rss', RssParser)
+parsers_manager.register_parser('atom', XmlParser)
+parsers_manager.register_parser('rss', XmlParser)
