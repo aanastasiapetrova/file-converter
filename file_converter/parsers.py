@@ -35,8 +35,8 @@ class Parser(ABC):
 class JsonParser(Parser):
     """Json parser class realization."""
 
-    def parse(self):
-       return json.loads(self.inputed_data)    
+    def parse(self, inputed_data):
+       return json.loads(inputed_data)    
 
 
 class XmlParser(Parser):
