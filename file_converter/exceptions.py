@@ -18,3 +18,6 @@ class FileIsIncorrectException(Exception):
 
 class StreamErrorException(Exception):
     pass
+
+class SortDirectionIsIncorrectException(Exception):
+    pass

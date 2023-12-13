@@ -11,6 +11,7 @@ from file_converter.exceptions import (
     StreamErrorException
     )
 import file_converter.parsers as parsers
+import file_converter.queries as queries
 
 
 class Command(ABC):
@@ -42,12 +43,11 @@ class ConverterCommand(Command):
     @staticmethod
     def get_inputed_data_format(data):
         """Makes primary content type definition."""
-
         if data.count('{') == data.count('}') and data.count('{') and not '<?xml' in data:
             return 'json'
         elif '<?xml' in data:
             if '<rss' in data and '</rss>' in data:
-                    return 'rss'
+                return 'rss'
             elif '<feed' in data and '</feed>' in data:
                 return 'atom'
         raise FormatIsUnsupportedException(f"Content can't be parsed.")
@@ -73,7 +73,8 @@ class ConverterCommand(Command):
             
         elif re.match(r'(https|http):\/\/[\S+\/]*\.\w+[\w+]*', self.input):
             try:
-                data = client.get(self.input).text
+                response = client.get(self.input)
+                data = response.text
             except Exception as e:
                 raise ConnectionIsFailedException(f'The error occured while getting data from {self.input} address. See the original exception: {e}.')
             
@@ -98,13 +99,23 @@ class ConverterCommand(Command):
 
 
     def start(self):
-        """Starting converter command."""
+        """Executing converter command."""
 
         if self.input is None or self.output is None:
             raise OptionIsRequiredException('Some of required options are missing!')
         
         inputed_data, inputed_format = self.get_input_data()
+        output_data = self.get_output_data_format()
 
-        output_data = self.get_output_data_format()        
+        parser = parsers.parsers_manager.get_parser(inputed_format)   
+        parsed_data = parser.parse(inputed_data)
 
-        print(parsers.parsers_manager.get_parser(inputed_format).parse(inputed_data))
+        query = queries.query_manager.get_query(inputed_format)
+
+        if self.sort:
+            print(query.sort(self.sort, parsed_data))
+        if self.author:
+            print(query.filter(self.author, parsed_data))
+        if self.limit:
+            print(query.limit(self.limit, parsed_data))
+

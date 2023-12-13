@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from operator import itemgetter
+from file_converter.exceptions import SortDirectionIsIncorrectException
 import json
 from lxml import etree
 
@@ -27,6 +29,7 @@ class Parser(ABC):
     def __init__(self):
         pass
 
+
     @abstractmethod
     def parse(self):
         raise NotImplementedError
@@ -36,15 +39,16 @@ class JsonParser(Parser):
     """Json parser class realization."""
 
     def parse(self, inputed_data):
-       print(inputed_data)
-       return json.loads(inputed_data)    
+       """Parse inputed data to python object."""
 
+       return json.loads(inputed_data)
+    
 
 class XmlParser(Parser):
     """Xml parser class realization."""
 
     def tranform_to_object(self, elements=[], data={}):
-        """Transforms XML elements and subelements to result object."""
+        """Transform XML elements and subelements to result object."""
 
         while len(elements):
             element = elements[0]
@@ -63,7 +67,8 @@ class XmlParser(Parser):
             else:
                 if tag in data:
                     value = data[tag]
-                    data[tag] = [value]
+                    if type(data[tag]) is not list:
+                        data[tag] = [value]
                     data[tag].append(self.tranform_to_object(element.getchildren(), {}))
                 else:
                     data[tag] = {}
@@ -80,13 +85,12 @@ class XmlParser(Parser):
 
     
     def parse(self, inputed_data):
-        """Prepares data and starts parse proccess."""
+        """Prepare data and start parse proccess."""
 
         root = etree.XML(bytes(inputed_data, encoding='utf-8'), etree.XMLParser(remove_blank_text=True))
         elements = list(root.iter("*"))[1:].copy()
 
         return self.tranform_to_object(elements, {})
-
 
 
 parsers_manager = ParserManager()
