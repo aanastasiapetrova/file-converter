@@ -1,7 +1,6 @@
 import re
 import sys
 import requests
-import magic
 from abc import ABC, abstractmethod
 from file_converter.exceptions import (
     OptionIsRequiredException,
@@ -11,11 +10,7 @@ from file_converter.exceptions import (
     FileIsIncorrectException,
     StreamErrorException
     )
-from file_converter.parsers import JsonParser
-from pathlib import Path
 import file_converter.parsers as parsers
-from lxml import etree
-
 
 
 class Command(ABC):

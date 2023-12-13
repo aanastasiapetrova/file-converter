@@ -1,0 +1,43 @@
+import pytest
+
+
+@pytest.fixture
+def json_file():
+    with open('fixtures/test.json', 'r', encoding='utf8') as filename:
+        data = ' '.join([l.strip() for l in filename.readlines()])
+    return data
+
+
+@pytest.fixture
+def rss_file():
+    with open('fixtures/test.rss', 'r', encoding='utf8') as filename:
+        data = ' '.join([l.strip() for l in filename.readlines()])
+    return data
+
+
+@pytest.fixture
+def atom_file():
+    with open('fixtures/test.atom', 'r', encoding='utf8') as filename:
+        data = ' '.join([l.strip() for l in filename.readlines()])
+    return data
+
+
+@pytest.fixture
+def txt_file():
+    with open('fixtures/test.txt', 'r', encoding='utf8') as filename:
+        data = ' '.join([l.strip() for l in filename.readlines()])
+    return data
+
+
+@pytest.fixture
+def xml_file():
+    with open('fixtures/test.xml', 'r', encoding='utf8') as filename:
+        data = ' '.join([l.strip() for l in filename.readlines()])
+    return data
+
+
+@pytest.fixture
+def text_file():
+    with open('fixtures/text.txt', 'r', encoding='utf8') as filename:
+        data = ' '.join([l.strip() for l in filename.readlines()])
+    return data

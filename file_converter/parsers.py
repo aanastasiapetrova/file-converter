@@ -36,6 +36,7 @@ class JsonParser(Parser):
     """Json parser class realization."""
 
     def parse(self, inputed_data):
+       print(inputed_data)
        return json.loads(inputed_data)    
 
 
@@ -43,12 +44,13 @@ class XmlParser(Parser):
     """Xml parser class realization."""
 
     def tranform_to_object(self, elements=[], data={}):
+        """Transforms XML elements and subelements to result object."""
 
         while len(elements):
             element = elements[0]
             tag = element.tag.split('}')[-1]
             if not element.getchildren() and element.text:
-                data[tag] = element.text
+                data[tag] = element.text.strip()
                 elements.remove(element)
             elif not element.getchildren() and not element.text:
                 if tag in data.keys():
@@ -78,6 +80,7 @@ class XmlParser(Parser):
 
     
     def parse(self, inputed_data):
+        """Prepares data and starts parse proccess."""
 
         root = etree.XML(bytes(inputed_data, encoding='utf-8'), etree.XMLParser(remove_blank_text=True))
         elements = list(root.iter("*"))[1:].copy()
