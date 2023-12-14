@@ -8,10 +8,14 @@ from file_converter.exceptions import (
     ConnectionIsFailedException,
     FormatIsUnsupportedException,
     FileIsIncorrectException,
-    StreamErrorException
+    StreamErrorException,
+    OutputFormatIsIncorrectException
     )
 import file_converter.parsers as parsers
 import file_converter.queries as queries
+import file_converter.adapters as adapters
+import file_converter.converters as converters
+import file_converter.savers as savers
 
 
 class Command(ABC):
@@ -92,6 +96,14 @@ class ConverterCommand(Command):
         return str(data), format
     
 
+    def get_output_data_type(self):
+        """Define output type by inputed option."""
+
+        if re.match(r'[A-Z]:\\[\S+\s?\/]*\.\w+', self.output) or re.match(r'\/?[\S+\/]*\.\S+', self.output):
+            return 'file'
+        raise OutputFormatIsIncorrectException(f'The iputed output format {self.output} is incorrect.')
+
+
     def get_output_data_format(self):
         """Defines output file format by its extension."""
 
@@ -105,19 +117,26 @@ class ConverterCommand(Command):
             raise OptionIsRequiredException('Some of required options are missing!')
         
         inputed_data, inputed_format = self.get_input_data()
-        print(inputed_data)
-        output_data = self.get_output_data_format()
+        output_format = self.get_output_data_format()
 
         parser = parsers.parsers_manager.get_parser(inputed_format)   
         parsed_data = parser.parse(inputed_data)
-        print(parsed_data)
 
         query = queries.query_manager.get_query(inputed_format)
 
         if self.sort:
-            print(query.sort(self.sort, parsed_data))
+            parsed_data = query.sort(self.sort, parsed_data)
         if self.author:
-            print(query.filter(self.author, parsed_data))
+            parsed_data = query.filter(self.author, parsed_data)
         if self.limit:
-            print(query.limit(self.limit, parsed_data))
+            parsed_data = query.limit(self.limit, parsed_data)
+
+        adapter = adapters.adapter_manager.get_adapter(inputed_format)
+        adapted_data = adapter.adapt(parsed_data)
+
+        converter = converters.converter_manager.get_converter(output_format)
+        converted_data = converter.convert(adapted_data)
+
+        saver = savers.saver_manager.get_saver(self.get_output_data_type())
+        saver.save(self.output, converted_data)
 

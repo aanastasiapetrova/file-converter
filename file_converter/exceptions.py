@@ -24,3 +24,6 @@ class SortDirectionIsIncorrectException(Exception):
 
 class LimitValueIsIncorrect(Exception):
     pass
+
+class OutputFormatIsIncorrectException(Exception):
+    pass
