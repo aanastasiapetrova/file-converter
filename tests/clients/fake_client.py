@@ -3,6 +3,6 @@ class FakeClient:
         self.text = text
 
     def get(self, url):
-        if self.text == 'Failure':
+        if self.text == "Failure":
             raise Exception
         return self

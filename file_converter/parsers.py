@@ -1,7 +1,6 @@
-from abc import ABC, abstractmethod
-from operator import itemgetter
-from file_converter.exceptions import SortDirectionIsIncorrectException
 import json
+from abc import ABC, abstractmethod
+
 from lxml import etree
 
 
@@ -11,17 +10,15 @@ class ParserManager:
     def __init__(self):
         self._parsers = {}
 
-
     def register_parser(self, format, parser):
         self._parsers[format] = parser
 
-    
     def get_parser(self, format):
         parser = self._parsers[format]
         if not parser:
             raise ValueError(f"{format} format parser isn't registered.")
         return parser()
-        
+
 
 class Parser(ABC):
     """Abstract parser's interface."""
@@ -29,20 +26,19 @@ class Parser(ABC):
     def __init__(self):
         pass
 
-
     @abstractmethod
     def parse(self):
         raise NotImplementedError
-        
+
 
 class JsonParser(Parser):
     """Json parser class realization."""
 
     def parse(self, inputed_data):
-       """Parse inputed data to python object."""
+        """Parse inputed data to python object."""
 
-       return json.loads(inputed_data)
-    
+        return json.loads(inputed_data)
+
 
 class XmlParser(Parser):
     """Xml parser class realization."""
@@ -52,7 +48,7 @@ class XmlParser(Parser):
 
         while len(elements):
             element = elements[0]
-            tag = element.tag.split('}')[-1]
+            tag = element.tag.split("}")[-1]
             if not element.getchildren() and element.text:
                 data[tag] = element.text.strip()
                 elements.remove(element)
@@ -78,22 +74,28 @@ class XmlParser(Parser):
                     if child.getchildren():
                         for grand in child.getchildren():
                             grand_children.append(grand)
-                elements = [e for e in elements if e not in element.getchildren() and e not in grand_children]
+                elements = [
+                    e
+                    for e in elements
+                    if e not in element.getchildren() and e not in grand_children
+                ]
                 elements.remove(element)
-            
+
         return data
 
-    
     def parse(self, inputed_data):
         """Prepare data and start parse proccess."""
 
-        root = etree.XML(bytes(inputed_data, encoding='utf-8'), etree.XMLParser(remove_blank_text=True))
+        root = etree.XML(
+            bytes(inputed_data, encoding="utf-8"),
+            etree.XMLParser(remove_blank_text=True),
+        )
         elements = list(root.iter("*"))[1:].copy()
 
         return self.tranform_to_object(elements, {})
 
 
 parsers_manager = ParserManager()
-parsers_manager.register_parser('json', JsonParser)
-parsers_manager.register_parser('atom', XmlParser)
-parsers_manager.register_parser('rss', XmlParser)
+parsers_manager.register_parser("json", JsonParser)
+parsers_manager.register_parser("atom", XmlParser)
+parsers_manager.register_parser("rss", XmlParser)

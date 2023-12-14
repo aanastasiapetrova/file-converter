@@ -1,4 +1,5 @@
-from file_converter.exceptions import OptionFormatIsIncorrectException, OptionIsRequiredException
+from file_converter.exceptions import OptionFormatIsIncorrectException
+
 
 class CommandManager:
     """Command manager class to manage commands classes."""
@@ -12,7 +13,7 @@ class CommandManager:
         count = 0
 
         for symb in option:
-            if symb == '-':
+            if symb == "-":
                 count += 1
             else:
                 break
@@ -23,8 +24,9 @@ class CommandManager:
             case 2:
                 return True
             case _:
-                raise OptionFormatIsIncorrectException(f"Command option should start with --, but option {option} does not.")
-
+                raise OptionFormatIsIncorrectException(
+                    f"Command option should start with --, but option {option} does not."
+                )
 
     def initialize_args(self, command_args_parameters):
         """Transform inputed command options from string to dictionary."""
@@ -32,20 +34,19 @@ class CommandManager:
         offset = 1
 
         for i in range(len(self.args)):
-            option = self.args[i].split('=')[0]
+            option = self.args[i].split("=")[0]
             if CommandManager.is_option(option):
                 offset = 1
-                option = self.args[i].split('=')[0].replace('--', '')
-                command_args_parameters[option] = self.args[i].split('=')[1]
+                option = self.args[i].split("=")[0].replace("--", "")
+                command_args_parameters[option] = self.args[i].split("=")[1]
             else:
-                self.args[i-offset] += ' ' + self.args[i]
-                option = self.args[i-offset].split('=')[0].replace('--', '')
-                command_args_parameters[option] += ' '
-                command_args_parameters[option] += self.args[i].split('=')[0]
+                self.args[i - offset] += " " + self.args[i]
+                option = self.args[i - offset].split("=")[0].replace("--", "")
+                command_args_parameters[option] += " "
+                command_args_parameters[option] += self.args[i].split("=")[0]
                 offset += 1
 
         return command_args_parameters
-    
 
     def get_command(self, config, initial_args):
         """Choose the correct command from config."""
