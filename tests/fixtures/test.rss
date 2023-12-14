@@ -7,13 +7,24 @@
   <description>Free web building tutorials</description>
   <item>
     <title>RSS Tutorial</title>
+    <author>Brent Simmons</author>
     <link>https://www.w3schools.com/xml/xml_rss.asp</link>
     <description>New RSS tutorial on W3Schools</description>
+    <pubDate>Tue, 19 Oct 2004 11:09:11 -0400</pubDate>
   </item>
   <item>
     <title>XML Tutorial</title>
+    <author>Mark Thompson</author>
     <link>https://www.w3schools.com/xml</link>
     <description>New XML tutorial on W3Schools</description>
+    <pubDate>Tue, 19 Oct 2004 11:09:09 -0400</pubDate>
+  </item>
+  <item>
+    <title>XML Tutorial II</title>
+    <author>Brent Simmons</author>
+    <link>https://www.w3schools.com/xml</link>
+    <description>New XML tutorial on W3Schools</description>
+    <pubDate>Tue, 19 Oct 2004 11:09:07 -0400</pubDate>
   </item>
 </channel>
 

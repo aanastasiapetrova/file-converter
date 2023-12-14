@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from operator import itemgetter
-from file_converter.exceptions import SortDirectionIsIncorrectException
+from file_converter.exceptions import SortDirectionIsIncorrectException, LimitValueIsIncorrect
 
 class QueryManager:
 
@@ -77,7 +77,10 @@ class JsonQuery(Query):
         """Return inputed amount of feed objects."""
 
         items = parsed_data['items']
-        parsed_data['items'] = items[:abs(int(limit))]
+        try:
+            parsed_data['items'] = items[:abs(int(limit))]
+        except Exception:
+            raise LimitValueIsIncorrect(f'The inputed limit value {limit} is incorrect. Try natural number.')
         
         return parsed_data
     
@@ -120,7 +123,10 @@ class RssQuery(Query):
         """Return inputed amount of feed objects."""
         
         items = parsed_data['channel']['item']
-        parsed_data['channel']['item'] = items[:abs(int(limit))]
+        try:
+            parsed_data['channel']['item'] = items[:abs(int(limit))]
+        except Exception:
+            raise LimitValueIsIncorrect(f'The inputed limit value {limit} is incorrect. Try natural number.')
 
         return parsed_data
 
@@ -164,7 +170,10 @@ class AtomQuery(Query):
         """Return inputed amount of feed objects."""
 
         items = parsed_data['entry']
-        parsed_data['entry'] = items[:abs(int(limit))]
+        try:
+            parsed_data['entry'] = items[:abs(int(limit))]
+        except Exception:
+            raise LimitValueIsIncorrect(f'The inputed limit value {limit} is incorrect. Try natural number.')
 
         return parsed_data
 

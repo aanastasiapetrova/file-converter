@@ -21,3 +21,6 @@ class StreamErrorException(Exception):
 
 class SortDirectionIsIncorrectException(Exception):
     pass
+
+class LimitValueIsIncorrect(Exception):
+    pass

@@ -64,7 +64,7 @@ class ConverterCommand(Command):
         
         data, format = '', ''
 
-        if re.match(r'[A-Z]:\/[\S+\s?\/]*\.\w+', self.input) or re.match(r'\/?[\w+\/]*\.\w+', self.input):
+        if re.match(r'[A-Z]:\\[\S+\s?\/]*\.\w+', self.input) or re.match(r'\/?[\w+\/]*\.\w+', self.input):
             try:
                 with open(self.input, 'r', encoding='utf8') as filename:
                     data = ' '.join([l.strip() for l in filename.readlines()])
@@ -105,10 +105,12 @@ class ConverterCommand(Command):
             raise OptionIsRequiredException('Some of required options are missing!')
         
         inputed_data, inputed_format = self.get_input_data()
+        print(inputed_data)
         output_data = self.get_output_data_format()
 
         parser = parsers.parsers_manager.get_parser(inputed_format)   
         parsed_data = parser.parse(inputed_data)
+        print(parsed_data)
 
         query = queries.query_manager.get_query(inputed_format)
 

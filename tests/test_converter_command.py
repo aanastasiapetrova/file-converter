@@ -1,28 +1,34 @@
 import pytest
-import sys
+import os
 from tests.clients.fake_client import FakeClient
 from tests.streams.fake_stream import FakeStream
-from file_converter.commands import ConverterCommand
 from file_converter.exceptions import InputMethodNotAllowedException, ConnectionIsFailedException, FormatIsUnsupportedException
 
-
-@pytest.fixture
-def converter():
-    return ConverterCommand(None, None)
 
 
 def test_get_inputed_data_from_absolute_file_path(converter):
     """Test inputed data getter by getting information from absolute file path."""
 
-    converter.input = 'C:/Users/Anastasia/Dev/file-converter/tests/fixtures/test.json'
-    assert converter.get_input_data() == ('{"id": 1, "title": "test", "text": "lorem ipsum dolor", "author": "unknown", "date": "2023-12-10"}', 'json')
+    relative_path = 'fixtures/test.json'
+    converter.input = os.path.abspath(relative_path)
+    assert converter.get_input_data() == ('{ "version": "https://jsonfeed.org/version/1", "title": "The Record", "home_page_url": "http://therecord.co/", '
+                                          '"feed_url": "http://therecord.co/feed.json", "items": [ { "id": "http://therecord.co/chris-parrish", '
+                                          '"title": "Special #1 - Chris Parrish", "author": { "name": "Brent Simmons" }, "date_published": "2014-05-09T14:04:00-07:00" }, '
+                                          '{ "id": "http://therecord.co/chris-parrish", "title": "Special #2 - Chris Parrish", "author": { "name": "Mark Thompson" }, '
+                                          '"date_published": "2015-05-09T14:04:00-07:00" }, { "id": "http://therecord.co/chris-parrish", '
+                                          '"title": "Special #3 - Chris Parrish", "author": { "name": "Brent Simmons" }, "date_published": "2013-05-09T14:04:00-07:00" } ] }', 'json')
 
 
 def test_get_inputed_data_from_relative_file_path(converter):
     """Test inputed data getter by getting information from relative file path."""
 
     converter.input = 'fixtures/test.json'
-    assert converter.get_input_data() == ('{"id": 1, "title": "test", "text": "lorem ipsum dolor", "author": "unknown", "date": "2023-12-10"}', 'json')
+    assert converter.get_input_data() == ('{ "version": "https://jsonfeed.org/version/1", "title": "The Record", "home_page_url": "http://therecord.co/", '
+                                          '"feed_url": "http://therecord.co/feed.json", "items": [ { "id": "http://therecord.co/chris-parrish", '
+                                          '"title": "Special #1 - Chris Parrish", "author": { "name": "Brent Simmons" }, "date_published": "2014-05-09T14:04:00-07:00" }, '
+                                          '{ "id": "http://therecord.co/chris-parrish", "title": "Special #2 - Chris Parrish", "author": { "name": "Mark Thompson" }, '
+                                          '"date_published": "2015-05-09T14:04:00-07:00" }, { "id": "http://therecord.co/chris-parrish", '
+                                          '"title": "Special #3 - Chris Parrish", "author": { "name": "Brent Simmons" }, "date_published": "2013-05-09T14:04:00-07:00" } ] }', 'json')
 
 
 def test_get_inputed_data_from_remote_url_ended_by_domain(converter):
