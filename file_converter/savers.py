@@ -30,9 +30,9 @@ class Saver(ABC):
 
 class FileSaver(Saver):
     """Saver to file class realization."""
-    
+
     def save(self, filepath, data):
-        with open(filepath, "a", encoding="utf8") as filename:
+        with open(filepath, "w", encoding="utf8") as filename:
             filename.write(str(data))
 
 

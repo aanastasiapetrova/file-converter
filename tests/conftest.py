@@ -2,6 +2,7 @@ import pytest
 
 import file_converter.parsers as parsers
 import file_converter.queries as queries
+import file_converter.adapters as adapters
 from file_converter.commands import ConverterCommand
 
 
@@ -23,6 +24,21 @@ def rss_query():
 @pytest.fixture
 def atom_query():
     return queries.query_manager.get_query("atom")
+
+
+@pytest.fixture
+def json_adapter():
+    return adapters.adapter_manager.get_adapter('json')
+
+
+@pytest.fixture
+def rss_adapter():
+    return adapters.adapter_manager.get_adapter('rss')
+
+
+@pytest.fixture
+def atom_adapter():
+    return adapters.adapter_manager.get_adapter('atom')
 
 
 @pytest.fixture
