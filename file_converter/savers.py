@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class SaverManager:
+    """Saver factory class to manage savers classes."""
+
     def __init__(self):
         self._savers = {}
 
@@ -16,6 +18,8 @@ class SaverManager:
 
 
 class Saver(ABC):
+    """Abstract saver's interface."""
+
     def __init__(self):
         pass
 
@@ -25,6 +29,8 @@ class Saver(ABC):
 
 
 class FileSaver(Saver):
+    """Saver to file class realization."""
+    
     def save(self, filepath, data):
         with open(filepath, "a", encoding="utf8") as filename:
             filename.write(str(data))

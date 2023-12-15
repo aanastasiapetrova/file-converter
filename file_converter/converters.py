@@ -4,6 +4,8 @@ from lxml import etree
 
 
 class ConverterManager:
+    """Converter factory class to manage converters classes."""
+
     def __init__(self):
         self._converters = {}
 
@@ -18,6 +20,8 @@ class ConverterManager:
 
 
 class Converter(ABC):
+    """Abstract converter's interface."""
+
     def __init__(self):
         pass
 
@@ -27,7 +31,11 @@ class Converter(ABC):
 
 
 class JsonConverter(Converter):
+    """Json converter class realization."""
+
     def convert(self, adapted_data):
+        """Convert data in general format to json."""
+
         if "records" in list(adapted_data.keys()):
             items = adapted_data["records"]
             adapted_data.pop("records")
@@ -43,7 +51,11 @@ class JsonConverter(Converter):
 
 
 class RssConverter(Converter):
+    """Rss converter class realization."""
+
     def convert_object_to_rss(self, root, adapted_data):
+        """Convert data in general format to rss."""
+
         for item in adapted_data:
             if item == "records":
                 for item in adapted_data[item]:
@@ -69,6 +81,8 @@ class RssConverter(Converter):
         return root
 
     def convert(self, adapted_data):
+        """Initialize data for convert method and start convertation."""
+
         root = etree.Element("rss", version="2.0")
         channel = etree.SubElement(root, "channel")
         etree.tostring(
@@ -83,7 +97,11 @@ class RssConverter(Converter):
 
 
 class AtomConverter(Converter):
+    """Atom converter class realization."""
+
     def convert_object_to_atom(self, root, adapted_data):
+        """Convert data in general format to atom."""
+
         for item in adapted_data:
             if item == "records":
                 for item in adapted_data[item]:
@@ -110,6 +128,8 @@ class AtomConverter(Converter):
         return root
 
     def convert(self, adapted_data):
+        """Initialize data for convert method and start convertation."""
+
         root = etree.Element("feed")
         return etree.tostring(
             self.convert_object_to_atom(root, adapted_data),

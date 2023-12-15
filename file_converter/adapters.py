@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class AdapterManager:
+    """Adapter factory class to manage adapters classes."""
+
     def __init__(self):
         self._adapters = {}
 
@@ -16,6 +18,8 @@ class AdapterManager:
 
 
 class Adapter(ABC):
+    """Abstract adapter's interface."""
+
     def __init__(self):
         pass
 
@@ -25,7 +29,11 @@ class Adapter(ABC):
 
 
 class JsonAdapter(Adapter):
+    """Json adapter class realization."""
+
     def adapt(self, parsed_data):
+        """Adapt parsed json data to general format."""
+
         if "items" in list(parsed_data.keys()):
             items = parsed_data["items"]
             parsed_data.pop("items")
@@ -41,6 +49,8 @@ class JsonAdapter(Adapter):
 
 
 class RssAdapter(Adapter):
+    """Adapt parsed rss data to general format."""
+
     def adapt(self, parsed_data):
         if "item" in list(parsed_data["channel"].keys()):
             items = parsed_data["channel"]["item"]
@@ -60,6 +70,8 @@ class RssAdapter(Adapter):
 
 
 class AtomAdapter(Adapter):
+    """Adapt parsed atom data to general format."""
+
     def adapt(self, parsed_data):
         if "entry" in list(parsed_data.keys()):
             entries = parsed_data["entry"]
