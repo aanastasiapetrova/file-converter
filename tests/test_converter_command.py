@@ -11,35 +11,19 @@ from tests.clients.fake_client import FakeClient
 from tests.streams.fake_stream import FakeStream
 
 
-def test_get_inputed_data_from_absolute_file_path(converter):
+def test_get_inputed_data_from_absolute_file_path(converter, json_file):
     """Test inputed data getter by getting information from absolute file path."""
 
     relative_path = "fixtures/test.json"
     converter.input = os.path.abspath(relative_path)
-    assert converter.get_input_data() == (
-        '{ "version": "https://jsonfeed.org/version/1", "title": "The Record", "home_page_url": "http://therecord.co/", '
-        '"feed_url": "http://therecord.co/feed.json", "items": [ { "id": "http://therecord.co/chris-parrish", '
-        '"title": "Special #1 - Chris Parrish", "author": { "name": "Brent Simmons" }, "date_published": "2014-05-09T14:04:00-07:00" }, '
-        '{ "id": "http://therecord.co/chris-parrish", "title": "Special #2 - Chris Parrish", "author": { "name": "Mark Thompson" }, '
-        '"date_published": "2015-05-09T14:04:00-07:00" }, { "id": "http://therecord.co/chris-parrish", '
-        '"title": "Special #3 - Chris Parrish", "author": { "name": "Brent Simmons" }, "date_published": "2013-05-09T14:04:00-07:00" } ] }',
-        "json",
-    )
+    assert converter.get_input_data() == (json_file, "json")
 
 
-def test_get_inputed_data_from_relative_file_path(converter):
+def test_get_inputed_data_from_relative_file_path(converter, json_file):
     """Test inputed data getter by getting information from relative file path."""
 
     converter.input = "fixtures/test.json"
-    assert converter.get_input_data() == (
-        '{ "version": "https://jsonfeed.org/version/1", "title": "The Record", "home_page_url": "http://therecord.co/", '
-        '"feed_url": "http://therecord.co/feed.json", "items": [ { "id": "http://therecord.co/chris-parrish", '
-        '"title": "Special #1 - Chris Parrish", "author": { "name": "Brent Simmons" }, "date_published": "2014-05-09T14:04:00-07:00" }, '
-        '{ "id": "http://therecord.co/chris-parrish", "title": "Special #2 - Chris Parrish", "author": { "name": "Mark Thompson" }, '
-        '"date_published": "2015-05-09T14:04:00-07:00" }, { "id": "http://therecord.co/chris-parrish", '
-        '"title": "Special #3 - Chris Parrish", "author": { "name": "Brent Simmons" }, "date_published": "2013-05-09T14:04:00-07:00" } ] }',
-        "json",
-    )
+    assert converter.get_input_data() == (json_file, "json")
 
 
 def test_get_inputed_data_from_remote_url_ended_by_domain(converter):

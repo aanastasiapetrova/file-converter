@@ -47,7 +47,7 @@ class JsonConverter(Converter):
                 item.pop("date")
                 item["date_published"] = date
 
-        return adapted_data
+        return str(adapted_data).replace("'", '"')
 
 
 class RssConverter(Converter):
