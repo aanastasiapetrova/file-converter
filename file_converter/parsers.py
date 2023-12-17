@@ -63,7 +63,7 @@ class XmlParser(Parser):
             else:
                 if tag in data:
                     value = data[tag]
-                    if type(data[tag]) is not list:
+                    if isinstance(data[tag], list):
                         data[tag] = [value]
                     data[tag].append(self.tranform_to_object(element.getchildren(), {}))
                 else:

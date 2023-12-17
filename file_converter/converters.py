@@ -63,7 +63,7 @@ class RssConverter(Converter):
                     self.convert_object_to_rss(record, item)
                     root.append(etree.XML(etree.tostring(record)))
 
-            elif type(adapted_data[item]) is dict:
+            elif isinstance(adapted_data[item], dict):
                 nested_element = etree.Element(item)
                 for dict_item in adapted_data[item]:
                     etree.SubElement(nested_element, dict_item).text = adapted_data[
@@ -72,7 +72,7 @@ class RssConverter(Converter):
                 nested = etree.tostring(nested_element)
                 root.append(etree.XML(nested))
 
-            elif type(adapted_data[item]) is str:
+            elif isinstance(adapted_data[item], str):
                 if item == "date":
                     etree.SubElement(root, "pubDate").text = adapted_data[item]
                 else:
@@ -109,17 +109,17 @@ class AtomConverter(Converter):
                     self.convert_object_to_atom(record, item)
                     root.append(etree.XML(etree.tostring(record)))
 
-            elif type(adapted_data[item]) is dict:
+            elif isinstance(adapted_data[item], dict):
                 nested_element = etree.Element(item)
                 for dict_item in adapted_data[item]:
-                    if type(dict_item) is str:
+                    if isinstance(dict_item, str):
                         etree.SubElement(nested_element, dict_item).text = adapted_data[
                             item
                         ][dict_item]
                 nested = etree.tostring(nested_element)
                 root.append(etree.XML(nested))
 
-            elif type(adapted_data[item]) is str:
+            elif isinstance(adapted_data[item], str):
                 if item == "date":
                     etree.SubElement(root, "published").text = adapted_data[item]
                 else:

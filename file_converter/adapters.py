@@ -62,7 +62,7 @@ class RssAdapter(Adapter):
                 date = item["pubDate"]
                 item.pop("pubDate")
                 item["date"] = date
-            if "author" in list(item.keys()) and type(item["author"]) is not dict:
+            if "author" in list(item.keys()) and not isinstance(item["author"], dict):
                 author = item["author"]
                 item["author"] = {"name": author}
 

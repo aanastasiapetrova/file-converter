@@ -51,7 +51,7 @@ class ConverterCommand(Command):
         if (
             data.count("{") == data.count("}")
             and data.count("{")
-            and not "<?xml" in data
+            and "<?xml" not in data
         ):
             return "json"
         elif "<?xml" in data:
@@ -59,7 +59,7 @@ class ConverterCommand(Command):
                 return "rss"
             elif "<feed" in data and "</feed>" in data:
                 return "atom"
-        raise FormatIsUnsupportedException(f"Content can't be parsed.")
+        raise FormatIsUnsupportedException("Content can't be parsed.")
 
     def info(self):
         """Shows information about inputed options."""
@@ -76,7 +76,7 @@ class ConverterCommand(Command):
         ):
             try:
                 with open(self.input, "r", encoding="utf8") as filename:
-                    data = " ".join([l.strip() for l in filename.readlines()])
+                    data = " ".join([line.strip() for line in filename.readlines()])
             except Exception as e:
                 raise FileIsIncorrectException(
                     f"The error occured while opening file by {self.input} path. See the original exception: {e}"
@@ -94,7 +94,7 @@ class ConverterCommand(Command):
         elif self.input == "stdin":
             try:
                 data = stream.read()
-            except Exception:
+            except Exception as e:
                 raise StreamErrorException(
                     f"The error occured while getting data by stdin. See the original exception: {e}."
                 )

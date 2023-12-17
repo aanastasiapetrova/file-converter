@@ -30,32 +30,32 @@ def atom_query():
 
 @pytest.fixture
 def json_adapter():
-    return adapters.adapter_manager.get_adapter('json')
+    return adapters.adapter_manager.get_adapter("json")
 
 
 @pytest.fixture
 def rss_adapter():
-    return adapters.adapter_manager.get_adapter('rss')
+    return adapters.adapter_manager.get_adapter("rss")
 
 
 @pytest.fixture
 def atom_adapter():
-    return adapters.adapter_manager.get_adapter('atom')
+    return adapters.adapter_manager.get_adapter("atom")
 
 
 @pytest.fixture
 def json_converter():
-    return converters.converter_manager.get_converter('json')
+    return converters.converter_manager.get_converter("json")
 
 
 @pytest.fixture
 def rss_converter():
-    return converters.converter_manager.get_converter('rss')
+    return converters.converter_manager.get_converter("rss")
 
 
 @pytest.fixture
 def atom_converter():
-    return converters.converter_manager.get_converter('atom')
+    return converters.converter_manager.get_converter("atom")
 
 
 @pytest.fixture
