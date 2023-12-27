@@ -1,47 +1,18 @@
-import json
-from abc import ABC, abstractmethod
-
 from lxml import etree
 
-
-class ParserManager:
-    """Parser factory class to manage parsers classes."""
-
-    def __init__(self):
-        self._parsers = {}
-
-    def register_parser(self, format, parser):
-        self._parsers[format] = parser
-
-    def get_parser(self, format):
-        parser = self._parsers[format]
-        if not parser:
-            raise ValueError(f"{format} format parser isn't registered.")
-        return parser()
-
-
-class Parser(ABC):
-    """Abstract parser's interface."""
-
-    def __init__(self):
-        pass
-
-    @abstractmethod
-    def parse(self):
-        raise NotImplementedError
-
-
-class JsonParser(Parser):
-    """Json parser class realization."""
-
-    def parse(self, inputed_data):
-        """Parse inputed data to python object."""
-
-        return json.loads(inputed_data)
-
+from file_converter.parsers.base_parser import Parser
 
 class XmlParser(Parser):
     """Xml parser class realization."""
+
+    @staticmethod
+    def is_valid(data):
+        if "<?xml" in data:
+            if "<rss" in data and "</rss>" in data:
+                return "rss"
+            elif "<feed" in data and "</feed>" in data:
+                return "atom"
+        return False
 
     def tranform_to_object(self, elements=[], data={}):
         """Transform XML elements and subelements to result object."""
@@ -63,7 +34,7 @@ class XmlParser(Parser):
             else:
                 if tag in data:
                     value = data[tag]
-                    if isinstance(data[tag], list):
+                    if not isinstance(data[tag], list):
                         data[tag] = [value]
                     data[tag].append(self.tranform_to_object(element.getchildren(), {}))
                 else:
@@ -93,9 +64,3 @@ class XmlParser(Parser):
         elements = list(root.iter("*"))[1:].copy()
 
         return self.tranform_to_object(elements, {})
-
-
-parsers_manager = ParserManager()
-parsers_manager.register_parser("json", JsonParser)
-parsers_manager.register_parser("atom", XmlParser)
-parsers_manager.register_parser("rss", XmlParser)

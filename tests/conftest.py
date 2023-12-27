@@ -1,10 +1,11 @@
 import pytest
 
-import file_converter.parsers as parsers
-import file_converter.queries as queries
-import file_converter.adapters as adapters
-import file_converter.converters as converters
-from file_converter.commands import ConverterCommand
+from file_converter.managers.parser_manager import parsers_manager 
+from file_converter.managers.query_manager import query_manager
+from file_converter.managers.adapter_manager import adapter_manager
+from file_converter.managers.converter_manager import converter_manager
+
+from file_converter.commands.converter_command import ConverterCommand
 from .helpers.get_file import get_file
 
 
@@ -15,47 +16,47 @@ def converter():
 
 @pytest.fixture
 def json_query():
-    return queries.query_manager.get_query("json")
+    return query_manager.get_query("json")
 
 
 @pytest.fixture
 def rss_query():
-    return queries.query_manager.get_query("rss")
+    return query_manager.get_query("rss")
 
 
 @pytest.fixture
 def atom_query():
-    return queries.query_manager.get_query("atom")
+    return query_manager.get_query("atom")
 
 
 @pytest.fixture
 def json_adapter():
-    return adapters.adapter_manager.get_adapter("json")
+    return adapter_manager.get_adapter("json")
 
 
 @pytest.fixture
 def rss_adapter():
-    return adapters.adapter_manager.get_adapter("rss")
+    return adapter_manager.get_adapter("rss")
 
 
 @pytest.fixture
 def atom_adapter():
-    return adapters.adapter_manager.get_adapter("atom")
+    return adapter_manager.get_adapter("atom")
 
 
 @pytest.fixture
 def json_converter():
-    return converters.converter_manager.get_converter("json")
+    return converter_manager.get_converter("json")
 
 
 @pytest.fixture
 def rss_converter():
-    return converters.converter_manager.get_converter("rss")
+    return converter_manager.get_converter("rss")
 
 
 @pytest.fixture
 def atom_converter():
-    return converters.converter_manager.get_converter("atom")
+    return converter_manager.get_converter("atom")
 
 
 @pytest.fixture
@@ -91,19 +92,19 @@ def text_file():
 @pytest.fixture
 def parsed_json_data():
     data = get_file("fixtures/test.json")
-    return parsers.parsers_manager.get_parser("json").parse(data)
+    return parsers_manager.get_parser("json").parse(data)
 
 
 @pytest.fixture
 def parsed_rss_data():
     data = get_file("fixtures/test.rss")
-    return parsers.parsers_manager.get_parser("rss").parse(data)
+    return parsers_manager.get_parser("rss").parse(data)
 
 
 @pytest.fixture
 def parsed_atom_data():
     data = get_file("fixtures/test.atom")
-    return parsers.parsers_manager.get_parser("atom").parse(data)
+    return parsers_manager.get_parser("atom").parse(data)
 
 
 @pytest.fixture

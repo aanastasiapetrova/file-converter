@@ -1,6 +1,6 @@
 import pytest
 
-import file_converter.parsers as parsers
+from file_converter.managers.parser_manager import parsers_manager
 
 
 @pytest.fixture
@@ -172,19 +172,19 @@ def parsed_atom_reference():
 def test_json_parser_by_json_file(json_file, parsed_json_reference):
     """Test json parser class transform json file to python object with correct structure."""
 
-    data = parsers.parsers_manager.get_parser("json").parse(json_file)
+    data = parsers_manager.get_parser("json").parse(json_file)
     assert data == parsed_json_reference
 
 
 def test_xml_parser_by_rss_file(rss_file, parsed_rss_reference):
     """Test xml parser class transform rss file to python object with correct structure."""
 
-    data = parsers.parsers_manager.get_parser("rss").parse(rss_file)
+    data = parsers_manager.get_parser("rss").parse(rss_file)
     assert data == parsed_rss_reference
 
 
 def test_xml_parser_by_atom_file(atom_file, parsed_atom_reference):
     """Test xml parser class transform atom file to python object with correct structure."""
 
-    data = parsers.parsers_manager.get_parser("atom").parse(atom_file)
+    data = parsers_manager.get_parser("atom").parse(atom_file)
     assert data == parsed_atom_reference
