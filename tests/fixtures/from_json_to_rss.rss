@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss version="2.0">
+  <channel>
+    <version>https://jsonfeed.org/version/1</version>
+    <title>The Record</title>
+    <home_page_url>http://therecord.co/</home_page_url>
+    <feed_url>http://therecord.co/feed.json</feed_url>
+    <item>
+      <id>http://therecord.co/chris-parrish</id>
+      <title>Special #1 - Chris Parrish</title>
+      <author>
+        <name>Brent Simmons</name>
+      </author>
+      <pubDate>2014-05-09T14:04:00-07:00</pubDate>
+    </item>
+    <item>
+      <id>http://therecord.co/chris-parrish</id>
+      <title>Special #2 - Chris Parrish</title>
+      <author>
+        <name>Mark Thompson</name>
+      </author>
+      <pubDate>2015-05-09T14:04:00-07:00</pubDate>
+    </item>
+    <item>
+      <id>http://therecord.co/chris-parrish</id>
+      <title>Special #3 - Chris Parrish</title>
+      <author>
+        <name>Brent Simmons</name>
+      </author>
+      <pubDate>2013-05-09T14:04:00-07:00</pubDate>
+    </item>
+  </channel>
+</rss>

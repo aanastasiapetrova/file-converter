@@ -1,0 +1,32 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "The Record",
+    "home_page_url": "http://therecord.co/",
+    "feed_url": "http://therecord.co/feed.json",
+    "items": [
+        {
+            "id": "http://therecord.co/chris-parrish",
+            "title": "Special #1 - Chris Parrish",
+            "author": {
+                "name": "Brent Simmons"
+            },
+            "date_published": "2014-05-09T14:04:00-07:00"
+        },
+        {
+            "id": "http://therecord.co/chris-parrish",
+            "title": "Special #2 - Chris Parrish",
+            "author": {
+                "name": "Mark Thompson"
+            },
+            "date_published": "2015-05-09T14:04:00-07:00"
+        },
+        {
+            "id": "http://therecord.co/chris-parrish",
+            "title": "Special #3 - Chris Parrish",
+            "author": {
+                "name": "Brent Simmons"
+            },
+            "date_published": "2013-05-09T14:04:00-07:00"
+        }
+    ]
+}
