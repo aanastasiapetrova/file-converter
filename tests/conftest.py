@@ -60,33 +60,8 @@ def atom_converter():
 
 
 @pytest.fixture
-def json_file():
-    return get_file("fixtures/test.json")
-
-
-@pytest.fixture
-def rss_file():
-    return get_file("fixtures/test.rss")
-
-
-@pytest.fixture
-def atom_file():
-    return get_file("fixtures/test.atom")
-
-
-@pytest.fixture
-def txt_file():
-    return get_file("fixtures/test.txt")
-
-
-@pytest.fixture
-def xml_file():
-    return get_file("fixtures/test.xml")
-
-
-@pytest.fixture
-def text_file():
-    return get_file("fixtures/text.txt")
+def file(request):
+    return get_file(request.param)
 
 
 @pytest.fixture
@@ -120,3 +95,4 @@ def adapted_rss_data(parsed_rss_data, rss_adapter):
 @pytest.fixture
 def adapted_atom_data(parsed_atom_data, atom_adapter):
     return atom_adapter.adapt(parsed_atom_data)
+
