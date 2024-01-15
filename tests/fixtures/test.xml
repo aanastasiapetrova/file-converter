@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>  
-<feed>  
-  <to>Tove</to>  
-  <from>Jani</from>  
-  <heading>Reminder</heading>  
-  <body>Don't forget me this weekend!</body>  
+<feed> 
+  <entry>
+    <to>Tove</to>  
+    <from>Jani</from>  
+    <heading>Reminder</heading>  
+    <body>Don't forget me this weekend!</body>
+    <published>2003-12-13T08:29:29-04:00</published>
+  </entry>
+  <entry>
+    <to>Tove</to>  
+    <from>Jani</from>  
+    <heading>Reminder</heading>  
+    <body>Don't forget me this weekend!</body>
+    <published>2003-12-13T08:29:29-04:00</published>
+  </entry>
 </feed>  

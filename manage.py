@@ -1,6 +1,6 @@
 import sys
 
-from file_converter.managers.command_manager import CommandManager
+from file_converter.managers.commands_manager import CommandManager
 from config import command_config, command_args_parameters
 
 

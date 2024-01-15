@@ -1,7 +1,7 @@
 import pytest
 
 from file_converter.exceptions import OptionFormatIsIncorrectException
-from file_converter.managers.command_manager import CommandManager
+from file_converter.managers.commands_manager import CommandManager
 
 
 

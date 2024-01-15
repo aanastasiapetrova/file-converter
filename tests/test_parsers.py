@@ -1,6 +1,6 @@
 import pytest
 
-from file_converter.managers.parser_manager import parsers_manager
+from file_converter.managers.parsers_manager import parsers_manager
 
 
 @pytest.mark.parametrize(
@@ -178,5 +178,5 @@ from file_converter.managers.parser_manager import parsers_manager
 def test_parser_by_file(file, format, expected):
     """Test parser class transform file to python object with correct structure."""
 
-    data = parsers_manager.get_parser(format).parse(file)
+    data = parsers_manager.get(format).parse(file)
     assert data == expected

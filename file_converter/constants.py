@@ -1,0 +1,1 @@
+FILES_TO_IGNORE = ["__init__.py", "commands_manager.py"]

@@ -11,6 +11,11 @@ class AtomQuery(Query):
     def __init__(self):
         pass
 
+    @staticmethod
+    def get_format():
+        return "atom"
+    
+
     def sort(self, direction, parsed_data):
         """Sort feed items by date in both directions."""
 

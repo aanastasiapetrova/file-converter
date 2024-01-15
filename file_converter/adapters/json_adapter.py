@@ -4,6 +4,10 @@ from file_converter.adapters.base_adapter import Adapter
 class JsonAdapter(Adapter):
     """Json adapter class realization."""
 
+    @staticmethod
+    def get_format():
+        return "json"
+
     def adapt(self, parsed_data):
         """Adapt parsed json data to general format."""
 

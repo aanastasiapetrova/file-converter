@@ -6,12 +6,18 @@ class Parser(ABC):
 
     def __init__(self):
         pass
+    
 
     @abstractmethod
     def parse(self):
         raise NotImplementedError
     
+
     @staticmethod
-    #@abstractmethod
-    def is_valid():
+    def get_format():
+        raise NotImplementedError
+    
+    
+    @staticmethod
+    def can_parse():
         raise NotImplementedError

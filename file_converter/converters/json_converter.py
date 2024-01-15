@@ -4,6 +4,10 @@ from file_converter.converters.base_converter import Converter
 class JsonConverter(Converter):
     """Json converter class realization."""
 
+    @staticmethod
+    def get_format():
+        return "json"
+
     def convert(self, adapted_data):
         """Convert data in general format to json."""
 

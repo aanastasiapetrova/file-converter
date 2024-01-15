@@ -4,6 +4,10 @@ from file_converter.adapters.base_adapter import Adapter
 class RssAdapter(Adapter):
     """Adapt parsed rss data to general format."""
 
+    @staticmethod
+    def get_format():
+        return "rss"
+
     def adapt(self, parsed_data):
         if "item" in list(parsed_data["channel"].keys()):
             items = parsed_data["channel"]["item"]

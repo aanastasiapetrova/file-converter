@@ -4,6 +4,10 @@ from file_converter.adapters.base_adapter import Adapter
 class AtomAdapter(Adapter):
     """Adapt parsed atom data to general format."""
 
+    @staticmethod
+    def get_format():
+        return "atom"
+
     def adapt(self, parsed_data):
         if "entry" in list(parsed_data.keys()):
             entries = parsed_data["entry"]

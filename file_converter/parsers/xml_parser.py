@@ -6,13 +6,14 @@ class XmlParser(Parser):
     """Xml parser class realization."""
 
     @staticmethod
-    def is_valid(data):
-        if "<?xml" in data:
-            if "<rss" in data and "</rss>" in data:
-                return "rss"
-            elif "<feed" in data and "</feed>" in data:
-                return "atom"
-        return False
+    def can_parse(data):
+        return bool("<?xml" in data)
+    
+    
+    @staticmethod
+    def get_format():
+        return "xml"
+    
 
     def tranform_to_object(self, elements=[], data={}):
         """Transform XML elements and subelements to result object."""

@@ -6,6 +6,10 @@ from file_converter.converters.base_converter import Converter
 class RssConverter(Converter):
     """Rss converter class realization."""
 
+    @staticmethod
+    def get_format():
+        return "rss"
+
     def convert_object_to_rss(self, root, adapted_data):
         """Convert data in general format to rss."""
 

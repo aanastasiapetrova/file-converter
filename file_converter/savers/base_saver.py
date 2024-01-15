@@ -7,6 +7,12 @@ class Saver(ABC):
     def __init__(self):
         pass
 
+
+    @staticmethod
+    def get_format():
+        raise NotImplementedError
+
+
     @abstractmethod
     def save(self):
         raise NotImplementedError

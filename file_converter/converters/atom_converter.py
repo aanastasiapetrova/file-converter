@@ -6,6 +6,10 @@ from file_converter.converters.base_converter import Converter
 class AtomConverter(Converter):
     """Atom converter class realization."""
 
+    @staticmethod
+    def get_format():
+        return "atom"
+
     def convert_object_to_atom(self, root, adapted_data):
         """Convert data in general format to atom."""
 
