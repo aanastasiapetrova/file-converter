@@ -10,8 +10,10 @@ class JsonParser(Parser):
     def can_parse(data):
         return bool(
             data.count("{") == data.count("}")
-            and data.count("{")
-            and "<?xml" not in data
+            and data.startswith("{")
+            and data.endswith("}")
+            and "items" in data
+            and "date_published" in data
         )
     
 

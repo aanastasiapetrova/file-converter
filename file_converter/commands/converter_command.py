@@ -5,6 +5,7 @@ import sys
 from file_converter.managers.adapters_manager import adapters_manager
 from file_converter.managers.parsers_manager import parsers_manager, parsers
 from file_converter.managers.queries_manager import queries_manager
+from file_converter.managers.recievers_manager import recievers_manager, recievers
 from file_converter.managers.converters_manager import converters_manager
 from file_converter.managers.savers_manager import savers_manager
 
@@ -17,7 +18,7 @@ from file_converter.exceptions import (
 from file_converter.commands.base_command import Command
 from file_converter.helpers.registrator import Registrator
 from file_converter.constants import FILES_TO_IGNORE
-from file_converter.helpers.data_getter import DataGetter
+
 
 class ConverterCommand(Command):
     """Converter command class realization."""
@@ -33,7 +34,7 @@ class ConverterCommand(Command):
     @staticmethod
     def get_inputed_data_format(data):
         """Makes primary content type definition."""
-        print(parsers)
+
         for parser in list(parsers.values()):
             can_parse = parser.can_parse(data)
             if can_parse:
@@ -53,8 +54,11 @@ class ConverterCommand(Command):
 
         data, format = "", ""
 
-        data_getter = DataGetter(self.input, client, stream)
-        data = data_getter.get_data()
+        for reciever_class in list(recievers.values()):
+            can_recieve = reciever_class.can_recieve(self.input)
+            if can_recieve:
+                reciever = recievers_manager.get(reciever_class.get_format(), self.input)
+                data = reciever.recieve()
 
         format = self.get_inputed_data_format(data)
 
@@ -64,10 +68,11 @@ class ConverterCommand(Command):
     def get_output_data_type(self):
         """Define output type by inputed option."""
 
-        data_getter = DataGetter(self.output)
-
-        if data_getter.is_file():
-            return "file"
+        for reciever_class in list(recievers.values()):
+            can_recieve = reciever_class.can_recieve(self.input)
+            if can_recieve:
+                return reciever_class.get_format()
+        
         raise OutputFormatIsIncorrectException(
             f"The iputed output format {self.output} is incorrect."
         )

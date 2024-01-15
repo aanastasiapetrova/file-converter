@@ -1,6 +1,3 @@
-# from file_converter.savers.file_saver import FileSaver
-
-
 class SaverManager:
     """Saver factory class to manage savers classes."""
 
@@ -18,4 +15,3 @@ class SaverManager:
 
 
 savers_manager = SaverManager()
-# saver_manager.register("file", FileSaver)

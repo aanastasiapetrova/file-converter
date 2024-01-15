@@ -1,8 +1,3 @@
-# from file_converter.adapters.json_adapter import JsonAdapter
-# from file_converter.adapters.rss_adapter import RssAdapter
-# from file_converter.adapters.atom_adapter import AtomAdapter
-
-
 class AdapterManager:
     """Adapter factory class to manage adapters classes."""
 
@@ -20,6 +15,3 @@ class AdapterManager:
 
 
 adapters_manager = AdapterManager()
-# adapter_manager.register("json", JsonAdapter)
-# adapter_manager.register("rss", RssAdapter)
-# adapter_manager.register("atom", AtomAdapter)

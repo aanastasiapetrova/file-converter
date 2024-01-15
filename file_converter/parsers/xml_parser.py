@@ -1,13 +1,24 @@
 from lxml import etree
 
 from file_converter.parsers.base_parser import Parser
+from file_converter.constants import XML_NECESSARY_TAGS
 
 class XmlParser(Parser):
     """Xml parser class realization."""
 
     @staticmethod
     def can_parse(data):
-        return bool("<?xml" in data)
+        can_parse = False
+
+        if "<?xml" in data:
+            for tag in XML_NECESSARY_TAGS:
+                can_parse = True
+                open_tag, close_tag = tag[0], tag[1]
+                if open_tag not in data or close_tag not in data or data.count(open_tag) != data.count(close_tag):
+                    can_parse = False
+                    return can_parse
+            return can_parse
+
     
     
     @staticmethod

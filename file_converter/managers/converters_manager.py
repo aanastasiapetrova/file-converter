@@ -1,8 +1,3 @@
-# from file_converter.converters.json_converter import JsonConverter
-# from file_converter.converters.rss_converter import RssConverter
-# from file_converter.converters.atom_converter import AtomConverter
-
-
 class ConverterManager:
     """Converter factory class to manage converters classes."""
 
@@ -23,6 +18,3 @@ class ConverterManager:
 
 
 converters_manager = ConverterManager()
-# converter_manager.register("json", JsonConverter)
-# converter_manager.register("rss", RssConverter)
-# converter_manager.register("atom", AtomConverter)

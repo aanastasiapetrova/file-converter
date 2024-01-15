@@ -1,7 +1,3 @@
-# from file_converter.parsers.json_parser import JsonParser
-# from file_converter.parsers.xml_parser import XmlParser
-
-
 class ParserManager:
     """Parser factory class to manage parsers classes."""
 
@@ -21,6 +17,3 @@ class ParserManager:
 
 parsers_manager = ParserManager()
 parsers = parsers_manager._parsers
-# parsers_manager.register("json", JsonParser)
-# parsers_manager.register("atom", XmlParser)
-# parsers_manager.register("rss", XmlParser)
