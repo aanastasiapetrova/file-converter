@@ -4,7 +4,8 @@ from file_converter.exceptions import StreamErrorException
 
 
 class StreamReciever(Reciever):
-    def __init__(self, stream=sys.stdin):
+    def __init__(self, inputed_stream, stream=sys.stdin):
+        self.inputed_stream = inputed_stream
         self.stream = stream
 
     

@@ -12,59 +12,6 @@ from tests.streams.fake_stream import FakeStream
 
 
 @pytest.mark.parametrize(
-        "file,path",
-        [
-            ("fixtures/test.json", os.path.abspath("fixtures/test.json")),
-            ("fixtures/test.json", "fixtures/test.json")
-        ],
-        indirect=["file",]
-    )
-def test_get_inputed_data_from_file_path(converter, file, path):
-    """Test inputed data getter by getting information from relative or absolute file path."""
-
-    converter.input = path
-    assert converter.get_input_data() == (file, "json")
-
-
-@pytest.mark.parametrize("url", ["https://some-website.com", "http://some-website.com/rss"])
-def test_get_inputed_data_from_remote_url(converter, url):
-    """Test inputed data getter by getting information from remote url."""
-
-    converter.input = url
-    assert converter.get_input_data(client=FakeClient('{"id": 1}')) == (
-        '{"id": 1}',
-        "json",
-    )
-
-
-def test_get_inputed_data_from_stdin(converter):
-    """Test inputed data getter by getting information by stdin."""
-    converter.input = "stdin"
-    assert converter.get_input_data(stream=FakeStream('{"id": 1}')) == (
-        '{"id": 1}',
-        "json",
-    )
-
-
-def test_get_inputed_data_by_unknown_method(converter):
-    """Test inputed data getter by inputing unknown data type."""
-
-    converter.input = "unknown-method"
-
-    with pytest.raises(InputMethodNotAllowedException):
-        converter.get_input_data()
-
-
-def test_get_inputed_data_with_connection_error(converter):
-    """Test inputed data getter handling connection error."""
-
-    converter.input = "http://unexisted-url.ru"
-
-    with pytest.raises(ConnectionIsFailedException):
-        converter.get_input_data("Failure")
-
-
-@pytest.mark.parametrize(
         "file,expected",
         [
             ("fixtures/test.json", "json"),

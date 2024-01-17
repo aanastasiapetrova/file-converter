@@ -35,6 +35,7 @@ class AtomQuery(Query):
 
         return parsed_data
 
+
     def filter(self, name, parsed_data):
         """Filter feed items by author's name."""
 
@@ -49,12 +50,13 @@ class AtomQuery(Query):
 
         return parsed_data
 
+
     def limit(self, limit, parsed_data):
         """Return inputed amount of feed objects."""
 
         items = parsed_data["entry"]
         try:
-            parsed_data["entry"] = items[: abs(int(limit))]
+            parsed_data["entry"] = items[:abs(int(limit))]
         except Exception:
             raise LimitValueIsIncorrect(
                 f"The inputed limit value {limit} is incorrect. Try natural number."

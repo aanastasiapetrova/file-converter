@@ -5,11 +5,11 @@ from file_converter.managers.parsers_manager import parsers_manager
 from file_converter.managers.queries_manager import queries_manager
 from file_converter.managers.adapters_manager import adapters_manager
 from file_converter.managers.converters_manager import converters_manager
+from file_converter.managers.recievers_manager import recievers_manager
 
 from file_converter.commands.converter_command import ConverterCommand
 from .helpers.get_file import get_file
 from file_converter.helpers.registrator import Registrator
-from file_converter.helpers.data_getter import DataGetter
 from file_converter.constants import FILES_TO_IGNORE
 
 @pytest.fixture(autouse=True)
@@ -38,13 +38,23 @@ def register_modules():
 
 
 @pytest.fixture
-def data_getter():
-    return DataGetter(None)
+def converter():
+    return ConverterCommand(None, None)
 
 
 @pytest.fixture
-def converter():
-    return ConverterCommand(None, None)
+def file_reciever():
+    return recievers_manager.get("file", "")
+
+
+@pytest.fixture
+def url_reciever():
+    return recievers_manager.get("url", "")
+
+
+@pytest.fixture
+def stream_reciever():
+    return recievers_manager.get("stream", "")
 
 
 @pytest.fixture
