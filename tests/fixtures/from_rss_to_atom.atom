@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<feed>
+  <title>W3Schools Home Page</title>
+  <link>https://www.w3schools.com</link>
+  <description>Free web building tutorials</description>
+  <entry>
+    <title>RSS Tutorial</title>
+    <author>
+      <name>Brent Simmons</name>
+    </author>
+    <link>https://www.w3schools.com/xml/xml_rss.asp</link>
+    <description>New RSS tutorial on W3Schools</description>
+    <published>Tue, 19 Oct 2004 11:09:11 -0400</published>
+  </entry>
+  <entry>
+    <title>XML Tutorial</title>
+    <author>
+      <name>Mark Thompson</name>
+    </author>
+    <link>https://www.w3schools.com/xml</link>
+    <description>New XML tutorial on W3Schools</description>
+    <published>Tue, 19 Oct 2004 11:09:09 -0400</published>
+  </entry>
+  <entry>
+    <title>XML Tutorial II</title>
+    <author>
+      <name>Brent Simmons</name>
+    </author>
+    <link>https://www.w3schools.com/xml</link>
+    <description>New XML tutorial on W3Schools</description>
+    <published>Tue, 19 Oct 2004 11:09:07 -0400</published>
+  </entry>
+</feed>
